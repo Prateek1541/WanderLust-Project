@@ -1,0 +1,49 @@
+# Node modules
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# Output / build files
+dist/
+build/
+
+# VS Code settings
+.vscode/
+
+# Cache
+.cache/
+.nyc_output/
+coverage/
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Optional: If you use uploads/storage
+uploads/
+public/uploads/
+
+# Ignore temp files created by editors
+*.swp
+*.swo
