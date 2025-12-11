@@ -26,6 +26,11 @@ router.get("/new", (req,res) => {
 router.get("/:id", wrapAsync(async (req,res) => {
     let{id} = req.params;
     const listing = await Listing.findById(id).populate("reviews");
+    if(!listing){
+        req.flash("error","Listing you requested for does not existed");
+        res.redirect("/listings");
+        return;
+    }
     res.render("listings/show.ejs",{listing});
 }));
 //create Route
@@ -46,18 +51,25 @@ router.post("/", validateListing, wrapAsync(async(req, res,next) => {
         // } one way is this other is schema.js
 
         await newListing.save();
+        req.flash("success","New Listing created!");
         res.redirect("/listings");}
 ));
 //edit route
 router.get("/:id/edit", wrapAsync(async(req, res) => {
     let{id} = req.params;
     const listing = await Listing.findById(id);
+    if(!listing){
+        req.flash("error","Listing you requested for does not existed");
+        res.redirect("/listings");
+        return;
+    }
     res.render("listings/edit.ejs", {listing});
 }));
 //update route 
 router.put("/:id", validateListing, wrapAsync(async(req, res) => {
     let {id} = req.params;
     await Listing.findByIdAndUpdate(id,{...req.body.listing});
+    req.flash("success","Listing updated");
     res.redirect(`/listings/${id}`);
 }));
 //delete route
@@ -65,6 +77,7 @@ router.delete("/:id", wrapAsync(async(req, res) => {
     let {id} = req.params;
     let deletedListing = await Listing.findByIdAndDelete(id);
     console.log(deletedListing);
+    req.flash("success","Listing Deleted");
     res.redirect("/listings/");
 }));
 module.exports = router;
