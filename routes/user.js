@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../models/user.js");
 const wrapAsync = require("../utils/wrapAsync");
 const passport = require("passport");
+const { saveRedirectUrl } = require("../middleware.js");
 
 // ---------------------------
 // SIGNUP ROUTES
@@ -51,14 +52,15 @@ router.get("/login", (req, res) => {
 
 // 4. Handle Login Logic
 // passport.authenticate() is a middleware that does all the heavy lifting
-router.post("/login", 
+router.post("/login", saveRedirectUrl,  
     passport.authenticate("local", { 
         failureRedirect: "/login", 
         failureFlash: true 
     }), 
     async (req, res) => {
         req.flash("success", "Welcome back to Wanderlust!");
-        res.redirect("/listings");
+        let redirectUrl = res.locals.redirectUrl || "/listings"; // Use || to ensure a default is always present
+        res.redirect(redirectUrl);
     }
 );
 

@@ -26,6 +26,10 @@ const listingSchema = new Schema({
       ref: "Review",
     },
   ],
+  owner: {
+        type: Schema.Types.ObjectId, // The data type is a MongoDB object ID
+        ref: "User",                // It references the "User" model
+    }
 });
 listingSchema.post("findOneAndDelete", async (listing) => {
   if (listing) {
